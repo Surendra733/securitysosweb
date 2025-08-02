@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecuritySOS Chat</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body>
+  <header class="glass">
+    <h1>SecuritySOS</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="emergency.html">Emergency</a>
+      <a href="tips.html">Safety Tips</a>
+      <a href="report.html">Report</a>
+      <a href="contact.html">Contact</a>
+      <a href="chat.html">Chat</a>
+    </nav>
+  </header>
+
+  <main class="hero-section glass">
+    <div class="hero-content" id="loginSection">
+      <h2>Login to Chat</h2>
+      <button class="btn" onclick="signInWithGoogle()">Sign In with Gmail</button>
+    </div>
+
+    <div class="hero-content" id="chatSection" style="display: none;">
+      <h2>Secure Chat</h2>
+      <div id="chatBox" style="height: 300px; overflow-y: auto; background-color: rgba(0,0,0,0.3); padding: 1em; border-radius: 8px; margin-bottom: 1em;"></div>
+      <input id="messageInput" type="text" placeholder="Type a message..." style="padding: 0.8em; border-radius: 6px; border: none; width: 80%;" />
+      <button class="btn" onclick="sendMessage()">Send</button>
+      <button class="btn" onclick="signOut()">Logout</button>
+    </div>
+  </main>
+
+  <footer class="glass">&copy; 2025 SecuritySOS</footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDo9kyc9H2DAZNNpgaUJwj_qpRzoPP2OKo",
+      authDomain: "securitysos-9c7c4.firebaseapp.com",
+      projectId: "securitysos-9c7c4",
+      databaseURL: "https://securitysos-9c7c4-default-rtdb.firebaseio.com",
+      storageBucket: "securitysos-9c7c4.appspot.com",
+      messagingSenderId: "114839714730",
+      appId: "1:114839714730:web:yourAppId"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    let currentUser = null;
+
+    // Check if user is already logged in
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        currentUser = user;
+        showChatSection();
+        listenForMessages();
+      } else {
+        document.getElementById("loginSection").style.display = "block";
+        document.getElementById("chatSection").style.display = "none";
+      }
+    });
+
+    function signInWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(result => {
+          currentUser = result.user;
+          showChatSection();
+          listenForMessages();
+        })
+        .catch(error => {
+          alert("Login Failed: " + error.message);
+        });
+    }
+
+    function signOut() {
+      auth.signOut().then(() => {
+        document.getElementById("loginSection").style.display = "block";
+        document.getElementById("chatSection").style.display = "none";
+        document.getElementById("chatBox").innerHTML = "";
+      });
+    }
+
+    function showChatSection() {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("chatSection").style.display = "block";
+    }
+
+    function sendMessage() {
+      const msg = document.getElementById("messageInput").value;
+      if (!msg.trim() || !currentUser) return;
+      db.ref("chats/" + currentUser.uid).push({
+        text: msg,
+        timestamp: Date.now()
+      });
+      document.getElementById("messageInput").value = "";
+    }
+
+    function listenForMessages() {
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML = "";
+      db.ref("chats/" + currentUser.uid).on("child_added", snapshot => {
+        const msg = snapshot.val();
+        const msgDiv = document.createElement("div");
+        msgDiv.textContent = msg.text;
+        msgDiv.style.marginBottom = "0.5em";
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+  </script>
+</body>
+
+</html>
