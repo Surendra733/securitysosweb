@@ -1,0 +1,135 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: url('https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+header {
+  padding: 1em 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  font-size: 2em;
+  color: #fff;
+}
+
+nav a {
+  margin: 0 1em;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff5252;
+}
+
+/* Hero Section */
+.hero-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2em;
+}
+
+.hero-content {
+  text-align: center;
+  padding: 4em 2em;
+  margin: auto;
+}
+
+.hero-content h2 {
+  font-size: 3em;
+  margin-bottom: 0.5em;
+}
+
+.hero-content p {
+  font-size: 1.2em;
+  margin-bottom: 1.5em;
+}
+
+.btn {
+  background-color: #e53935;
+  padding: 0.8em 2em;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #c62828;
+}
+
+/* Info Cards */
+.info-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2em;
+  padding: 3em 2em;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card {
+  flex: 1 1 300px;
+  max-width: 350px;
+  padding: 2em;
+  text-align: center;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1em;
+  font-size: 0.9em;
+  margin-top: 2em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-content h2 {
+    font-size: 2em;
+  }
+
+  nav {
+    margin-top: 1em;
+    text-align: center;
+    width: 100%;
+  }
+
+  nav a {
+    display: inline-block;
+    margin: 0.5em 0.8em;
+  }
+}
