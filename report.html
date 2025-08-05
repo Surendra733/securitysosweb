@@ -21,14 +21,54 @@
   <main class="hero-section glass">
     <div class="hero-content">
       <h2>Report an Incident</h2>
-      <form style="display: flex; flex-direction: column; gap: 1em; max-width: 500px; margin: auto;">
-        <input type="text" placeholder="Location" required style="padding: 0.8em; border-radius: 6px; border: none;" />
-        <textarea placeholder="Describe the incident..." required style="padding: 0.8em; border-radius: 6px; border: none;" rows="5"></textarea>
+      <form id="reportForm" style="display: flex; flex-direction: column; gap: 1em; max-width: 500px; margin: auto;">
+        <input id="locationInput" type="text" placeholder="Fetching location..." required style="padding: 0.8em; border-radius: 6px; border: none;" />
+        <textarea id="descriptionInput" placeholder="Describe the incident..." required style="padding: 0.8em; border-radius: 6px; border: none;" rows="5"></textarea>
         <button type="submit" class="btn">Submit Report</button>
       </form>
+      <p id="status" style="text-align: center; margin-top: 1em;"></p>
     </div>
   </main>
 
   <footer class="glass">&copy; 2025 SecuritySOS</footer>
+<script>
+    // Auto-fetch human-readable location using OpenStreetMap
+    window.onload = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
+              .then(response => response.json())
+              .then(data => {
+                const address = data.display_name;
+                document.getElementById("locationInput").value = address;
+              })
+              .catch(() => {
+                document.getElementById("locationInput").value = `Lat: ${lat}, Lon: ${lon}`;
+              });
+          },
+          error => {
+            alert("Unable to fetch location: " + error.message);
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    };
+
+    // Handle form submission and send message via WhatsApp
+    document.getElementById("reportForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const location = document.getElementById("locationInput").value;
+      const description = document.getElementById("descriptionInput").value;
+      const message = `🚨 *SecuritySOS Alert* 🚨%0ALocation: ${location}%0ADescription: ${description}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+      alert("Incident report generated and opened in WhatsApp.");
+      this.reset();
+    });
+  </script>
 </body>
 </html>
