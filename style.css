@@ -110,20 +110,24 @@ nav a:hover::after {
 }
 
 .btn {
-  padding: 0.7rem 1.5rem;
-  border-radius: 30px;
+  padding: 1rem 2.5rem;          /* Bigger padding */
+  border-radius: 40px;           /* More rounded */
   background: #00f7ff;
   color: black;
   font-weight: bold;
+  font-size: 1.2rem;             /* Increased text size */
   cursor: pointer;
-  transition: transform 0.3s ease;
-  box-shadow: 0 0 10px #0ff;
+  transition: transform 0.3s ease, box-shadow 0.3s;
+  box-shadow: 0 0 20px #0ff;
+  margin: 0.5rem;
 }
 
 .btn:hover {
   transform: scale(1.1);
   background: #0ff;
+  box-shadow: 0 0 25px #00f7ff, 0 0 15px #0ff inset;
 }
+
 
 /* Glassmorphism Card */
 .card, .glass {
