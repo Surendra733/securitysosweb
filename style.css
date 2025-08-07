@@ -62,6 +62,32 @@ nav a:hover::after {
   width: 100%;
 }
 
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: white;
+  margin: 4px 0;
+  transition: all 0.3s;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mobile-nav a {
+  padding: 0.5rem 0;
+  border-top: 1px solid #444;
+}
+
 /* Hero Section */
 .hero-section {
   background: url('https://images.unsplash.com/photo-1581093448794-6f09b43f466f') no-repeat center center/cover;
@@ -259,14 +285,20 @@ footer {
     align-items: flex-start;
   }
 
-  nav {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
+  .hamburger {
+    display: flex;
   }
 
-  nav a {
-    margin: 0.5rem 0;
+  nav {
+    display: none;
+  }
+
+  nav.active {
+    display: flex;
+  }
+
+  .mobile-nav {
+    display: flex;
   }
 
   .hero-content h2 {
@@ -300,3 +332,60 @@ footer {
     text-align: center;
   }
 }
+
+
+/* Add to end of style.css */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  position: relative;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+}
+
+#nav-menu {
+  display: flex;
+  gap: 20px;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  margin: 3px 0;
+  transition: 0.4s;
+}
+
+@media screen and (max-width: 768px) {
+  #nav-menu {
+    display: none;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.85);
+    position: absolute;
+    top: 70px;
+    right: 30px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  #nav-menu.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
